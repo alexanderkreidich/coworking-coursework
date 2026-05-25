@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+<h2 class="mb-4">Личный кабинет</h2>
+
+<div class="row g-3">
+    <div class="col-md-{% if user.is_administrator %}6{% else %}4{% endif %}">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Профиль</h5>
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" class="avatar-mini mb-2">
+                {% endif %}
+                <p class="mb-1"><strong>{{ user.full_name }}</strong></p>
+                <p class="mb-1 text-muted">{{ user.get_role_display }}</p>
+                <p class="mb-1"><i class="bi bi-envelope"></i> {{ user.email|default:"—" }}</p>
+                <p class="mb-3"><i class="bi bi-telephone"></i> {{ user.phone|default:"—" }}</p>
+                <a href="{% url 'accounts:edit_profile' %}" class="btn btn-outline-primary btn-sm">Редактировать</a>
+            </div>
+        </div>
+    </div>
+
+    {% if not user.is_administrator %}
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Активный абонемент</h5>
+                {% if active_subscription %}
+                    <p class="mb-1"><strong>{{ active_subscription.tariff.name }}</strong></p>
+                    <p class="mb-1">Действует до {{ active_subscription.end_date|date:"d.m.Y" }}</p>
+                    <a href="{% url 'subscriptions:extend' active_subscription.pk %}" class="btn btn-outline-success btn-sm">Продлить</a>
+                {% else %}
+                    <p class="text-muted">У вас нет активного абонемента.</p>
+                    <a href="{% url 'subscriptions:tariffs' %}" class="btn btn-primary btn-sm">Выбрать тариф</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="col-md-{% if user.is_administrator %}6{% else %}4{% endif %}">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Быстрые действия</h5>
+                <div class="d-grid gap-2">
+                    {% if user.is_administrator %}
+                        <a href="{% url 'resources:admin_list' %}" class="btn btn-primary">Управление ресурсами</a>
+                        <a href="{% url 'bookings:all_bookings' %}" class="btn btn-outline-secondary">Все бронирования</a>
+                        <a href="{% url 'stats:dashboard' %}" class="btn btn-outline-secondary">Статистика</a>
+                    {% else %}
+                        <a href="{% url 'resources:catalog' %}" class="btn btn-primary">Забронировать место</a>
+                        <a href="{% url 'bookings:my_bookings' %}" class="btn btn-outline-secondary">Мои бронирования</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mt-5">Последние бронирования</h4>
+{% if bookings %}
+<table class="table table-hover bg-white shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Ресурс</th>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Статус</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for b in bookings %}
+        <tr>
+            <td>{{ b.resource.name }}</td>
+            <td>{{ b.date|date:"d.m.Y" }}</td>
+            <td>{{ b.time_start|time:"H:i" }} – {{ b.time_end|time:"H:i" }}</td>
+            <td>{{ b.get_status_display }}</td>
+            <td><a href="{% url 'bookings:detail' b.pk %}" class="btn btn-sm btn-outline-primary">Открыть</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p class="text-muted">У вас пока нет бронирований.</p>
+{% endif %}
+
+{% if not user.is_administrator %}
+<h4 class="mt-5">История абонементов</h4>
+{% if subscriptions %}
+<ul class="list-group shadow-sm">
+    {% for s in subscriptions %}
+        <li class="list-group-item d-flex justify-content-between">
+            <span>{{ s.tariff.name }} ({{ s.start_date|date:"d.m.Y" }} – {{ s.end_date|date:"d.m.Y" }})</span>
+            <span class="badge bg-secondary">{{ s.get_status_display }}</span>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p class="text-muted">Пока не приобретено ни одного абонемента.</p>
+{% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Бронирование #{{ booking.id }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h3>Бронирование #{{ booking.id }}</h3>
+        <dl class="row booking-summary">
+            <dt class="col-sm-3">Ресурс</dt><dd class="col-sm-9"><a href="{% url 'resources:detail' booking.resource.pk %}">{{ booking.resource.name }}</a></dd>
+            <dt class="col-sm-3">Пользователь</dt><dd class="col-sm-9">{{ booking.user }}</dd>
+            <dt class="col-sm-3">Дата</dt><dd class="col-sm-9">{{ booking.date|date:"d.m.Y" }}</dd>
+            <dt class="col-sm-3">Время</dt><dd class="col-sm-9">{{ booking.time_start|time:"H:i" }} – {{ booking.time_end|time:"H:i" }}</dd>
+            <dt class="col-sm-3">Продолжительность</dt><dd class="col-sm-9">{{ booking.duration_hours }} ч.</dd>
+            <dt class="col-sm-3">Стоимость</dt><dd class="col-sm-9">{{ booking.cost|floatformat:2 }} ₽</dd>
+            <dt class="col-sm-3">Статус</dt><dd class="col-sm-9">{{ booking.get_status_display }}</dd>
+            {% if booking.comment %}
+                <dt class="col-sm-3">Комментарий</dt><dd class="col-sm-9">{{ booking.comment }}</dd>
+            {% endif %}
+        </dl>
+        {% if booking.status == "confirmed" or booking.status == "pending" %}
+            <a href="{% url 'bookings:cancel' booking.pk %}" class="btn btn-outline-danger">Отменить</a>
+        {% endif %}
+        <a href="{% url 'bookings:my_bookings' %}" class="btn btn-outline-secondary">Назад</a>
+    </div>
+</div>
+{% endblock %}

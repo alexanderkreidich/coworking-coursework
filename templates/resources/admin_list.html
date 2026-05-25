@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Управление ресурсами{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Управление ресурсами</h2>
+    <a href="{% url 'resources:create' %}" class="btn btn-success"><i class="bi bi-plus"></i> Добавить ресурс</a>
+</div>
+<table class="table table-hover bg-white shadow-sm">
+    <thead class="table-light">
+        <tr><th>Название</th><th>Тип</th><th>Вместимость</th><th>Цена</th><th>Статус</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for r in resources %}
+        <tr>
+            <td>{{ r.name }}</td>
+            <td>{{ r.get_type_display }}</td>
+            <td>{{ r.capacity }}</td>
+            <td>{{ r.price_per_hour }} ₽</td>
+            <td>{% if r.is_active %}<span class="badge bg-success">активен</span>{% else %}<span class="badge bg-secondary">скрыт</span>{% endif %}</td>
+            <td>
+                <a href="{% url 'resources:edit' r.pk %}" class="btn btn-sm btn-outline-primary">Править</a>
+                <a href="{% url 'resources:delete' r.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="6" class="text-muted text-center">Пока нет ни одного ресурса.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

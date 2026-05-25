@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Новое бронирование{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="d-flex align-items-center mb-3">
+            <a href="{% url 'resources:catalog' %}" class="btn btn-link text-decoration-none p-0 me-2">
+                <i class="bi bi-arrow-left"></i> Каталог
+            </a>
+        </div>
+
+        <h2 class="mb-4"><i class="bi bi-calendar-plus text-primary"></i> Новое бронирование</h2>
+
+        {% if resource %}
+            <div class="card card-body shadow-sm mb-3 booking-resource-banner">
+                <div class="d-flex align-items-center">
+                    {% if resource.photo %}
+                        <img src="{{ resource.photo.url }}" class="booking-resource-thumb me-3" alt="">
+                    {% else %}
+                        <div class="booking-resource-thumb me-3 d-flex align-items-center justify-content-center bg-light">
+                            <i class="bi bi-building text-secondary" style="font-size:1.5rem;"></i>
+                        </div>
+                    {% endif %}
+                    <div class="flex-grow-1">
+                        <div class="text-muted small">{{ resource.get_type_display }}</div>
+                        <div class="fw-semibold fs-5">{{ resource.name }}</div>
+                        <div class="text-muted small">
+                            <i class="bi bi-people"></i> Вместимость: {{ resource.capacity }} чел.
+                            · <i class="bi bi-cash-coin"></i> {{ resource.price_per_hour }} ₽/час
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="post" class="card card-body shadow-sm booking-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i> {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            {% if not resource %}
+                <div class="mb-3">
+                    <label class="form-label" for="{{ form.resource.id_for_label }}">
+                        <i class="bi bi-building"></i> {{ form.resource.label }}
+                    </label>
+                    {{ form.resource }}
+                    {% if form.resource.errors %}<div class="text-danger small mt-1">{{ form.resource.errors }}</div>{% endif %}
+                </div>
+            {% else %}
+                {{ form.resource }}
+            {% endif %}
+
+            <div class="mb-3">
+                <label class="form-label" for="{{ form.date.id_for_label }}">
+                    <i class="bi bi-calendar-event"></i> {{ form.date.label }}
+                </label>
+                {{ form.date }}
+                {% if form.date.errors %}<div class="text-danger small mt-1">{{ form.date.errors }}</div>{% endif %}
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.time_start.id_for_label }}">
+                        <i class="bi bi-play-circle"></i> {{ form.time_start.label }}
+                    </label>
+                    {{ form.time_start }}
+                    {% if form.time_start.errors %}<div class="text-danger small mt-1">{{ form.time_start.errors }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ form.time_end.id_for_label }}">
+                        <i class="bi bi-stop-circle"></i> {{ form.time_end.label }}
+                    </label>
+                    {{ form.time_end }}
+                    {% if form.time_end.errors %}<div class="text-danger small mt-1">{{ form.time_end.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="{{ form.comment.id_for_label }}">
+                    <i class="bi bi-chat-left-text"></i> {{ form.comment.label }}
+                </label>
+                {{ form.comment }}
+                {% if form.comment.errors %}<div class="text-danger small mt-1">{{ form.comment.errors }}</div>{% endif %}
+            </div>
+
+            <hr class="my-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'resources:catalog' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg"></i> Отмена
+                </a>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-check2-circle"></i> Забронировать
+                </button>
+            </div>
+        </form>
+
+        <p class="text-muted small mt-3 text-center">
+            <i class="bi bi-info-circle"></i> При пересечении временного интервала с существующим бронированием
+            система предложит выбрать другое время.
+        </p>
+
+    </div>
+</div>
+{% endblock %}

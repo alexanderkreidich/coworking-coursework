@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Тарифы{% endblock %}
+{% block content %}
+<h2 class="mb-4">Тарифы и абонементы</h2>
+<div class="row g-3">
+    {% for t in tariffs %}
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <span class="badge bg-primary mb-2">{{ t.get_type_display }}</span>
+                    <h4>{{ t.name }}</h4>
+                    <p class="display-6 fw-bold">{{ t.price }} ₽</p>
+                    <p class="text-muted">Срок: {{ t.duration_days }} дн. / {{ t.hours_per_day }} ч. в сутки</p>
+                    <p>{{ t.description }}</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'subscriptions:purchase' t.pk %}" class="btn btn-success mt-auto">Оформить</a>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary mt-auto">Войти для покупки</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col"><div class="alert alert-info">Тарифы пока не добавлены.</div></div>
+    {% endfor %}
+</div>
+{% endblock %}

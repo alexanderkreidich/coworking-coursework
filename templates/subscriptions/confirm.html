@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Оформление абонемента{% endblock %}
+{% block content %}
+<div class="card card-body shadow-sm">
+    <h3>Оформление абонемента</h3>
+    <p>Тариф: <strong>{{ tariff.name }}</strong></p>
+    <p>Стоимость: <strong>{{ tariff.price }} ₽</strong></p>
+    <p>Срок действия: <strong>{{ tariff.duration_days }} дн.</strong></p>
+    <p class="text-muted"><small>В учебной версии оплата не производится — абонемент будет активирован сразу.</small></p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-success">Оформить</button>
+        <a href="{% url 'subscriptions:tariffs' %}" class="btn btn-outline-secondary">Назад</a>
+    </form>
+</div>
+{% endblock %}

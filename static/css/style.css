@@ -1,0 +1,598 @@
+/* ------------------------------------------------------------------
+ * Цветовая гамма: тёплый кремовый фон, кофейный текст,
+ * коралловый акцент. Переопределяет CSS-переменные Bootstrap 5.
+ * ------------------------------------------------------------------ */
+
+:root {
+    /* Палитра */
+    --tsv-fon: #FAF9F5;
+    --tsv-poverkhnost: #FFFFFF;
+    --tsv-poverkhnost-tyoplaya: #F5F2EC;
+    --tsv-granitsa: #E8E4DC;
+    --tsv-granitsa-temnaya: #D8D2C5;
+
+    --tsv-tekst: #2C2825;
+    --tsv-tekst-priglushennyj: #6B6661;
+    --tsv-tekst-svetlyj: #87837C;
+
+    --tsv-aktsent: #CC785C;        /* фирменный коралл Claude */
+    --tsv-aktsent-temnyj: #B5654B;
+    --tsv-aktsent-svetlyj: #E8B59F;
+    --tsv-aktsent-fon: #F8EDE7;
+
+    --tsv-uspekh: #4F7A6A;
+    --tsv-uspekh-fon: #E8F0EC;
+    --tsv-preduprezhdenie: #C28A3A;
+    --tsv-preduprezhdenie-fon: #F8EFD9;
+    --tsv-opasnost: #B5564A;
+    --tsv-opasnost-fon: #F4DDD9;
+    --tsv-info: #5B7A95;
+    --tsv-info-fon: #E4ECF2;
+
+    /* Переопределение переменных Bootstrap */
+    --bs-body-bg: var(--tsv-fon);
+    --bs-body-color: var(--tsv-tekst);
+    --bs-border-color: var(--tsv-granitsa);
+    --bs-border-radius: 0.625rem;
+    --bs-border-radius-lg: 0.875rem;
+    --bs-border-radius-sm: 0.4rem;
+
+    --bs-primary: #CC785C;
+    --bs-primary-rgb: 204, 120, 92;
+    --bs-link-color: var(--tsv-aktsent-temnyj);
+    --bs-link-color-rgb: 181, 101, 75;
+    --bs-link-hover-color: var(--tsv-aktsent);
+
+    --bs-secondary-color: var(--tsv-tekst-priglushennyj);
+    --bs-tertiary-bg: var(--tsv-poverkhnost-tyoplaya);
+
+    --bs-success: #4F7A6A;
+    --bs-info: #5B7A95;
+    --bs-warning: #C28A3A;
+    --bs-danger: #B5564A;
+}
+
+/* ------------------------------ Глобально ------------------------------ */
+
+body {
+    background-color: var(--tsv-fon);
+    color: var(--tsv-tekst);
+    font-family: "Inter", "Söhne", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.005em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--tsv-tekst);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+
+/* ------------------------------ Навигация ------------------------------ */
+
+.navbar {
+    background-color: var(--tsv-poverkhnost) !important;
+    border-bottom: 1px solid var(--tsv-granitsa);
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+}
+
+.navbar.navbar-dark, .navbar.bg-primary {
+    background-color: var(--tsv-poverkhnost) !important;
+}
+
+.navbar .navbar-brand {
+    color: var(--tsv-tekst) !important;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.015em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar .navbar-brand i {
+    color: var(--tsv-aktsent);
+}
+
+.navbar .nav-link {
+    color: var(--tsv-tekst-priglushennyj) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.85rem !important;
+    border-radius: 0.5rem;
+    transition: all 0.15s ease;
+}
+
+.navbar .nav-link:hover {
+    color: var(--tsv-tekst) !important;
+    background-color: var(--tsv-poverkhnost-tyoplaya);
+}
+
+.navbar .nav-link.active {
+    color: var(--tsv-aktsent) !important;
+}
+
+.navbar-toggler {
+    border-color: var(--tsv-granitsa);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(44, 40, 37, 0.75)' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.dropdown-menu {
+    border: 1px solid var(--tsv-granitsa);
+    border-radius: 0.65rem;
+    box-shadow: 0 4px 16px rgba(44, 40, 37, 0.08);
+    padding: 0.4rem;
+    background-color: var(--tsv-poverkhnost);
+}
+
+.dropdown-item {
+    border-radius: 0.4rem;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.94rem;
+    color: var(--tsv-tekst);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--tsv-poverkhnost-tyoplaya);
+    color: var(--tsv-tekst);
+}
+
+/* -------------------------------- Кнопки ------------------------------- */
+
+.btn {
+    border-radius: 0.55rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.15s ease;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+}
+
+.btn-filter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.btn-primary {
+    background-color: var(--tsv-aktsent);
+    border-color: var(--tsv-aktsent);
+    color: #FFFFFF;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--tsv-aktsent-temnyj);
+    border-color: var(--tsv-aktsent-temnyj);
+    color: #FFFFFF;
+}
+
+.btn-primary:active {
+    background-color: var(--tsv-aktsent-temnyj) !important;
+    border-color: var(--tsv-aktsent-temnyj) !important;
+}
+
+.btn-outline-primary {
+    color: var(--tsv-aktsent-temnyj);
+    border-color: var(--tsv-granitsa-temnaya);
+    background-color: var(--tsv-poverkhnost);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--tsv-aktsent-fon);
+    color: var(--tsv-aktsent-temnyj);
+    border-color: var(--tsv-aktsent-svetlyj);
+}
+
+.btn-secondary {
+    background-color: var(--tsv-poverkhnost);
+    border-color: var(--tsv-granitsa-temnaya);
+    color: var(--tsv-tekst);
+}
+
+.btn-secondary:hover {
+    background-color: var(--tsv-poverkhnost-tyoplaya);
+    border-color: var(--tsv-granitsa-temnaya);
+    color: var(--tsv-tekst);
+}
+
+.btn-success {
+    background-color: var(--tsv-uspekh);
+    border-color: var(--tsv-uspekh);
+    color: #FFFFFF;
+}
+
+.btn-danger {
+    background-color: var(--tsv-opasnost);
+    border-color: var(--tsv-opasnost);
+    color: #FFFFFF;
+}
+
+.btn-outline-secondary {
+    color: var(--tsv-tekst);
+    border-color: var(--tsv-granitsa-temnaya);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--tsv-poverkhnost-tyoplaya);
+    color: var(--tsv-tekst);
+    border-color: var(--tsv-granitsa-temnaya);
+}
+
+.btn-link {
+    color: var(--tsv-aktsent-temnyj);
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    color: var(--tsv-aktsent);
+}
+
+/* --------------------------------- Карты ------------------------------- */
+
+.card {
+    background-color: var(--tsv-poverkhnost);
+    border: 1px solid var(--tsv-granitsa);
+    border-radius: 0.75rem;
+    box-shadow: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.card:hover {
+    border-color: var(--tsv-granitsa-temnaya);
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--tsv-granitsa);
+    font-weight: 600;
+    padding: 0.85rem 1.1rem;
+}
+
+.card-body {
+    padding: 1.1rem;
+}
+
+.card-title {
+    font-weight: 600;
+    color: var(--tsv-tekst);
+}
+
+.resource-card {
+    overflow: hidden;
+}
+
+.resource-card img {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover img {
+    transform: scale(1.03);
+}
+
+.resource-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ------------------------------ Формы и поля ---------------------------- */
+
+.form-control, .form-select {
+    background-color: var(--tsv-poverkhnost);
+    border: 1px solid var(--tsv-granitsa-temnaya);
+    border-radius: 0.55rem;
+    color: var(--tsv-tekst);
+    padding: 0.55rem 0.85rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--tsv-aktsent-svetlyj);
+    box-shadow: 0 0 0 3px rgba(204, 120, 92, 0.15);
+    background-color: var(--tsv-poverkhnost);
+    color: var(--tsv-tekst);
+}
+
+.form-control::placeholder {
+    color: var(--tsv-tekst-svetlyj);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--tsv-tekst);
+    margin-bottom: 0.4rem;
+    font-size: 0.92rem;
+}
+
+.form-text {
+    color: var(--tsv-tekst-svetlyj);
+}
+
+.input-group-text {
+    background-color: var(--tsv-poverkhnost-tyoplaya);
+    border-color: var(--tsv-granitsa-temnaya);
+    color: var(--tsv-tekst-priglushennyj);
+}
+
+/* ----------------------------- Форма-фильтр ----------------------------- */
+
+.filter-form {
+    background-color: var(--tsv-poverkhnost);
+    border: 1px solid var(--tsv-granitsa);
+}
+
+.filter-form .form-label {
+    font-size: 0.85rem;
+    color: var(--tsv-tekst-priglushennyj);
+    margin-bottom: 0.3rem;
+}
+
+.filter-form .form-control,
+.filter-form .form-select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.93rem;
+}
+
+/* ----------------------------- Форма бронирования ----------------------- */
+
+.booking-form .form-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+    color: var(--tsv-tekst);
+}
+
+.booking-form .form-label i {
+    color: var(--tsv-aktsent);
+    font-size: 1rem;
+}
+
+.booking-form .form-control,
+.booking-form .form-select {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.97rem;
+}
+
+.booking-form input[type="date"],
+.booking-form input[type="time"] {
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+}
+
+.booking-form textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.booking-resource-banner {
+    background-color: var(--tsv-aktsent-fon);
+    border-color: var(--tsv-aktsent-svetlyj);
+}
+
+.booking-resource-thumb {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 0.55rem;
+    border: 1px solid var(--tsv-granitsa);
+    flex-shrink: 0;
+}
+
+/* -------------------------------- Бэйджи ------------------------------- */
+
+.badge {
+    font-weight: 500;
+    border-radius: 0.45rem;
+    padding: 0.32em 0.65em;
+    letter-spacing: 0.005em;
+}
+
+.badge.bg-primary, .badge.text-bg-primary {
+    background-color: var(--tsv-aktsent-fon) !important;
+    color: var(--tsv-aktsent-temnyj) !important;
+}
+
+.badge.bg-success, .badge.text-bg-success {
+    background-color: var(--tsv-uspekh-fon) !important;
+    color: var(--tsv-uspekh) !important;
+}
+
+.badge.bg-warning, .badge.text-bg-warning {
+    background-color: var(--tsv-preduprezhdenie-fon) !important;
+    color: var(--tsv-preduprezhdenie) !important;
+}
+
+.badge.bg-danger, .badge.text-bg-danger {
+    background-color: var(--tsv-opasnost-fon) !important;
+    color: var(--tsv-opasnost) !important;
+}
+
+.badge.bg-info, .badge.text-bg-info {
+    background-color: var(--tsv-info-fon) !important;
+    color: var(--tsv-info) !important;
+}
+
+.badge.bg-secondary, .badge.text-bg-secondary {
+    background-color: var(--tsv-poverkhnost-tyoplaya) !important;
+    color: var(--tsv-tekst-priglushennyj) !important;
+}
+
+.badge-type {
+    font-size: 0.78rem;
+}
+
+/* ------------------------------- Таблицы ------------------------------- */
+
+.table {
+    --bs-table-bg: transparent;
+    color: var(--tsv-tekst);
+    border-color: var(--tsv-granitsa);
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid var(--tsv-granitsa);
+}
+
+.table > thead {
+    background-color: var(--tsv-poverkhnost-tyoplaya);
+}
+
+.table > thead th {
+    font-weight: 600;
+    color: var(--tsv-tekst-priglushennyj);
+    text-transform: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.01em;
+    border-bottom: 1px solid var(--tsv-granitsa);
+}
+
+.table-hover > tbody > tr:hover {
+    --bs-table-hover-bg: var(--tsv-poverkhnost-tyoplaya);
+    color: var(--tsv-tekst);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-striped-bg: var(--tsv-poverkhnost-tyoplaya);
+}
+
+/* ------------------------------ Сообщения ------------------------------ */
+
+.alert {
+    border: 1px solid transparent;
+    border-radius: 0.65rem;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.95rem;
+}
+
+.alert-success {
+    background-color: var(--tsv-uspekh-fon);
+    border-color: rgba(79, 122, 106, 0.2);
+    color: var(--tsv-uspekh);
+}
+
+.alert-danger, .alert-error {
+    background-color: var(--tsv-opasnost-fon);
+    border-color: rgba(181, 86, 74, 0.2);
+    color: var(--tsv-opasnost);
+}
+
+.alert-warning {
+    background-color: var(--tsv-preduprezhdenie-fon);
+    border-color: rgba(194, 138, 58, 0.2);
+    color: var(--tsv-preduprezhdenie);
+}
+
+.alert-info {
+    background-color: var(--tsv-info-fon);
+    border-color: rgba(91, 122, 149, 0.2);
+    color: var(--tsv-info);
+}
+
+.alert-primary {
+    background-color: var(--tsv-aktsent-fon);
+    border-color: rgba(204, 120, 92, 0.2);
+    color: var(--tsv-aktsent-temnyj);
+}
+
+/* ------------------------------ Пагинация ------------------------------ */
+
+.pagination {
+    --bs-pagination-color: var(--tsv-tekst-priglushennyj);
+    --bs-pagination-bg: var(--tsv-poverkhnost);
+    --bs-pagination-border-color: var(--tsv-granitsa);
+    --bs-pagination-hover-color: var(--tsv-aktsent-temnyj);
+    --bs-pagination-hover-bg: var(--tsv-poverkhnost-tyoplaya);
+    --bs-pagination-hover-border-color: var(--tsv-granitsa);
+    --bs-pagination-active-color: #FFFFFF;
+    --bs-pagination-active-bg: var(--tsv-aktsent);
+    --bs-pagination-active-border-color: var(--tsv-aktsent);
+    --bs-pagination-border-radius: 0.5rem;
+}
+
+/* -------------------- Карточки статистики и профиля -------------------- */
+
+.booking-summary dt {
+    font-weight: 500;
+    color: var(--tsv-tekst-priglushennyj);
+    font-size: 0.92rem;
+}
+
+.booking-summary dd {
+    color: var(--tsv-tekst);
+    margin-bottom: 0.6rem;
+}
+
+.avatar-mini {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid var(--tsv-granitsa);
+}
+
+.stat-card {
+    border-left: 3px solid var(--tsv-aktsent);
+}
+
+/* --------------------------- Подвал страницы --------------------------- */
+
+footer.bg-dark {
+    background-color: var(--tsv-poverkhnost) !important;
+    color: var(--tsv-tekst-svetlyj) !important;
+    border-top: 1px solid var(--tsv-granitsa);
+}
+
+footer.bg-dark .text-light {
+    color: var(--tsv-tekst-svetlyj) !important;
+}
+
+/* ------------------------------ Прочее --------------------------------- */
+
+.text-muted {
+    color: var(--tsv-tekst-svetlyj) !important;
+}
+
+hr {
+    border-color: var(--tsv-granitsa);
+    opacity: 1;
+}
+
+::selection {
+    background-color: var(--tsv-aktsent-fon);
+    color: var(--tsv-aktsent-temnyj);
+}
+
+code, pre {
+    background-color: var(--tsv-poverkhnost-tyoplaya);
+    color: var(--tsv-aktsent-temnyj);
+    border-radius: 0.35rem;
+    padding: 0.1em 0.35em;
+    font-size: 0.92em;
+}
+
+pre {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--tsv-granitsa);
+}

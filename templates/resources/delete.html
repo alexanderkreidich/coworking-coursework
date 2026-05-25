@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Удаление ресурса{% endblock %}
+{% block content %}
+<div class="card card-body shadow-sm">
+    <h3>Удаление ресурса</h3>
+    <p>Вы действительно хотите удалить ресурс «<strong>{{ resource.name }}</strong>»? Это действие необратимо.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger">Удалить</button>
+        <a href="{% url 'resources:admin_list' %}" class="btn btn-outline-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

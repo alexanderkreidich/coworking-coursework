@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ resource.name }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        {% if resource.photo %}
+            <img src="{{ resource.photo.url }}" class="img-fluid rounded shadow-sm" alt="{{ resource.name }}">
+        {% elif resource.type == "open_seat" %}
+            <img src="{% static 'img/resources/otkrytoe-rabochee-mesto.png' %}" class="img-fluid rounded shadow-sm" alt="{{ resource.get_type_display }}">
+        {% elif resource.type == "fixed_desk" %}
+            <img src="{% static 'img/resources/fiksirovannyj-stol.png' %}" class="img-fluid rounded shadow-sm" alt="{{ resource.get_type_display }}">
+        {% elif resource.type == "private_office" %}
+            <img src="{% static 'img/resources/privatnyj-kabinet.png' %}" class="img-fluid rounded shadow-sm" alt="{{ resource.get_type_display }}">
+        {% elif resource.type == "meeting_room" %}
+            <img src="{% static 'img/resources/peregovornaya-komnata.png' %}" class="img-fluid rounded shadow-sm" alt="{{ resource.get_type_display }}">
+        {% else %}
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height:400px;">
+                <i class="bi bi-image text-light" style="font-size:5rem;"></i>
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <span class="badge bg-info text-dark mb-2">{{ resource.get_type_display }}</span>
+        <h2>{{ resource.name }}</h2>
+        <p class="lead">{{ resource.description }}</p>
+        <dl class="row">
+            <dt class="col-sm-4">Вместимость:</dt><dd class="col-sm-8">{{ resource.capacity }} чел.</dd>
+            <dt class="col-sm-4">Цена:</dt><dd class="col-sm-8">{{ resource.price_per_hour }} ₽/час</dd>
+            {% if resource.equipment %}
+                <dt class="col-sm-4">Оборудование:</dt><dd class="col-sm-8">{{ resource.equipment }}</dd>
+            {% endif %}
+        </dl>
+        {% if user.is_authenticated %}
+            <a href="{% url 'bookings:create_for_resource' resource.pk %}" class="btn btn-success btn-lg">
+                <i class="bi bi-calendar-plus"></i> Забронировать
+            </a>
+        {% else %}
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary">Войдите, чтобы забронировать</a>
+        {% endif %}
+        <a href="{% url 'resources:catalog' %}" class="btn btn-outline-secondary">Назад в каталог</a>
+    </div>
+</div>
+{% endblock %}

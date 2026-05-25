@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Статистика{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Статистика за последние {{ days }} дней</h2>
+    <a href="{% url 'stats:export' %}" class="btn btn-outline-success"><i class="bi bi-download"></i> Экспорт XLSX</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <div class="text-muted small">Всего бронирований</div>
+        <div class="display-6">{{ summary.total_bookings }}</div>
+    </div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <div class="text-muted small">Всего часов</div>
+        <div class="display-6">{{ summary.total_hours|floatformat:1 }}</div>
+    </div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <div class="text-muted small">Активных ресурсов</div>
+        <div class="display-6">{{ summary.active_resources }}</div>
+    </div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <div class="text-muted small">Всего ресурсов</div>
+        <div class="display-6">{{ summary.total_resources }}</div>
+    </div></div></div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5>Загруженность по дням</h5>
+        <canvas id="chartDays" height="90"></canvas>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5>Топ популярных ресурсов</h5>
+            <canvas id="chartResources"></canvas>
+        </div></div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5>Топ активных пользователей</h5>
+            <ol class="list-group list-group-numbered list-group-flush">
+                {% for a in active_users %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>
+                            {% if a.user__last_name or a.user__first_name %}
+                                {{ a.user__last_name }} {{ a.user__first_name }}
+                            {% else %}
+                                {{ a.user__username }}
+                            {% endif %}
+                        </span>
+                        <span class="badge bg-primary">{{ a.count }}</span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">Нет данных</li>
+                {% endfor %}
+            </ol>
+        </div></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const dayLabels = {{ day_labels|safe }};
+    const dayValues = {{ day_values|safe }};
+    new Chart(document.getElementById("chartDays"), {
+        type: "line",
+        data: {
+            labels: dayLabels,
+            datasets: [{
+                label: "Бронирований",
+                data: dayValues,
+                borderColor: "#0d6efd",
+                backgroundColor: "rgba(13,110,253,0.2)",
+                tension: 0.3,
+                fill: true,
+            }],
+        },
+        options: { scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+
+    const popular = [
+        {% for p in popular %}
+            { name: "{{ p.resource__name|escapejs }}", count: {{ p.count }} },
+        {% endfor %}
+    ];
+    new Chart(document.getElementById("chartResources"), {
+        type: "bar",
+        data: {
+            labels: popular.map(p => p.name),
+            datasets: [{
+                label: "Бронирований",
+                data: popular.map(p => p.count),
+                backgroundColor: "#198754",
+            }],
+        },
+        options: { indexAxis: "y", scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Продление абонемента{% endblock %}
+{% block content %}
+<div class="card card-body shadow-sm">
+    <h3>Продление абонемента</h3>
+    <p>Продлить абонемент «{{ subscription.tariff.name }}» на {{ subscription.tariff.duration_days }} дн.?</p>
+    <p>Новая дата окончания: {{ subscription.end_date|date:"d.m.Y" }} + {{ subscription.tariff.duration_days }} дн.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-success">Продлить</button>
+        <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

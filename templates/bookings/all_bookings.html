@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Все бронирования{% endblock %}
+{% block content %}
+<h2>Все бронирования</h2>
+<table class="table table-striped table-hover bg-white shadow-sm">
+    <thead class="table-light">
+        <tr><th>#</th><th>Пользователь</th><th>Ресурс</th><th>Дата</th><th>Время</th><th>Статус</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for b in bookings %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.user }}</td>
+            <td>{{ b.resource.name }}</td>
+            <td>{{ b.date|date:"d.m.Y" }}</td>
+            <td>{{ b.time_start|time:"H:i" }} – {{ b.time_end|time:"H:i" }}</td>
+            <td>{{ b.get_status_display }}</td>
+            <td><a href="{% url 'bookings:detail' b.pk %}" class="btn btn-sm btn-outline-primary">Открыть</a></td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="7" class="text-muted text-center">Бронирований пока нет.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
