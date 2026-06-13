@@ -55,16 +55,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "coworking.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "coworking_db"),
-        "USER": os.environ.get("DB_USER", "coworking"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "coworking"),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
+# На хостингах (Railway, Heroku и т. п.) база передаётся единой строкой
+# подключения в переменной DATABASE_URL. Если она задана — используем её,
+# иначе собираем настройки из отдельных переменных DB_* (локальная разработка).
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if DATABASE_URL:
+    import dj_database_url
+
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600),
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("DB_NAME", "coworking_db"),
+            "USER": os.environ.get("DB_USER", "coworking"),
+            "PASSWORD": os.environ.get("DB_PASSWORD", "coworking"),
+            "HOST": os.environ.get("DB_HOST", "localhost"),
+            "PORT": os.environ.get("DB_PORT", "5432"),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
