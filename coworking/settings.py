@@ -55,16 +55,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "coworking.wsgi.application"
 
-# На хостингах (Railway, Heroku и т. п.) база передаётся единой строкой
-# подключения в переменной DATABASE_URL. Если она задана — используем её,
-# иначе собираем настройки из отдельных переменных DB_* (локальная разработка).
+# Настройки базы данных выбираются из переменных окружения по приоритету:
+#   1) DATABASE_URL — единая строка подключения (Railway, Heroku и т. п.);
+#   2) PG* — отдельные переменные, которые плагин Postgres Railway прокидывает
+#      всегда (PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE);
+#   3) DB_* — отдельные переменные для локальной разработки.
 DATABASE_URL = os.environ.get("DATABASE_URL")
+PGHOST = os.environ.get("PGHOST")
+
 if DATABASE_URL:
     import dj_database_url
 
     DATABASES = {
         "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600),
     }
+    _db_source = "DATABASE_URL"
+elif PGHOST:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("PGDATABASE", "railway"),
+            "USER": os.environ.get("PGUSER", "postgres"),
+            "PASSWORD": os.environ.get("PGPASSWORD", ""),
+            "HOST": PGHOST,
+            "PORT": os.environ.get("PGPORT", "5432"),
+            "CONN_MAX_AGE": 600,
+        }
+    }
+    _db_source = "PG*"
 else:
     DATABASES = {
         "default": {
@@ -76,6 +94,14 @@ else:
             "PORT": os.environ.get("DB_PORT", "5432"),
         }
     }
+    _db_source = "DB_* (локальный фолбэк)"
+
+# Печатаем в лог выбранный источник и хост — помогает диагностировать деплой.
+print(
+    f"[settings] Источник настроек БД: {_db_source}; "
+    f"HOST={DATABASES['default'].get('HOST')!r}",
+    flush=True,
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
